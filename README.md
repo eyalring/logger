@@ -4,7 +4,7 @@ config file . please fill the method you want to **output_channel** of the logs 
 you can configure the file name prefix by filling the **file_name** attribute. the logger will add the ISO date time string after when opening a new log file containing the current time. 
 In order for the logger to save the log in a designated folder you will have to define it using the **file_path** attribute.
 feel free to add a grreeting if you want to decorate your log at the begining of a new line .
-in order to log the reuqired data you can use the logLevel attribute to choose your required logging level . the options are :
+in order to log the reuqired data you can use the **logLevel** attribute to choose your required logging level . the options are :
 debug
 info
 warning
