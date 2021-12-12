@@ -5,10 +5,10 @@ you can configure the file name prefix by filling the **file_name** attribute. t
 In order for the logger to save the log in a designated folder you will have to define it using the **file_path** attribute.
 feel free to add a grreeting if you want to decorate your log at the begining of a new line .
 in order to log the reuqired data you can use the **logLevel** attribute to choose your required logging level . the options are :
--- debug
--- info
--- warning
--- error
+- debug
+- info
+- warning
+- error
 
 a configuration sample can look like this :
 
