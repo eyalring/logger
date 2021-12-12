@@ -1,8 +1,9 @@
-const configuration = require('dotenv').config({ path: './logger.config' })
 const fs = require('fs');
 const readable = require('stream').Readable;
 const path = require('path');
 const loggerLevelChecker = require('./loggingLevelChecker');
+const loggerConfigPath = path.join(__dirname,'logger.config');
+const configuration = require('dotenv').config({path:loggerConfigPath})
 
 class Logger{
    constructor(outputAsFile = false ,outputAsConsole = false,logLevel = 'error'){
