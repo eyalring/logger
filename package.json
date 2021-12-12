@@ -1,0 +1,23 @@
+{
+  "name": "greetdalogger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eyalring/logger.git"
+  },
+  "author": "eyal.ringwald",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eyalring/logger/issues"
+  },
+  "homepage": "https://github.com/eyalring/logger#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "stream": "^0.0.2"
+  }
+}
