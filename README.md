@@ -12,7 +12,7 @@ error
 
 a configuration sample can look like this :
 
-`
+```
 #options are console or file , can be both by comma seperated : console,file
 output_channel=file
 #file name , if output source is chosen as a file
@@ -23,5 +23,5 @@ file_path=/Users/eyal/Projects/logger/logs
 greeting=handsome
 #define the logging level debug/info/warning/
 logLevel=warning
-`
+```
 
