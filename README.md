@@ -3,7 +3,6 @@ in order to use this package you will have to download the code and run :
 
 ```
 npm install
-
 ```
 
 the package contains dependencies of dotenv and stream
