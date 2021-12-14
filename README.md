@@ -1,5 +1,13 @@
 # logger
-in order to use this package you will have to configure the logger.
+in order to use this package you will have to download the code and run :
+
+```
+npm install
+
+```
+
+the package contains dependencies of dotenv and stream
+configure the logger.
 config file . please fill the method you want to **output_channel** of the logs - file,console or both. 
 you can configure the file name prefix by filling the **file_name** attribute. the logger will add the ISO date time string after when opening a new log file containing the current time. 
 In order for the logger to save the log in a designated folder you will have to define it using the **file_path** attribute.
@@ -25,3 +33,11 @@ greeting=handsome
 logLevel=warning
 ```
 
+the output to console/file will have the greetings so output of the test provided in debug mode will looke like this :
+```
+handsome DEBUG:hello world
+handsome DEBUG:hello world second line
+handsome WARNING:hello warning
+handsome ERROR:hello error
+
+```

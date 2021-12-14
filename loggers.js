@@ -3,73 +3,61 @@ const readable = require('stream').Readable;
 const path = require('path');
 const loggerLevelChecker = require('./loggingLevelChecker');
 const loggerConfigPath = path.join(__dirname,'logger.config');
-const configuration = require('dotenv').config({path:loggerConfigPath})
+require('dotenv').config({path:loggerConfigPath})
 
 class Logger{
-   constructor(outputAsFile = false ,outputAsConsole = false,logLevel = 'error'){
-    this.outputAsFile = process.env.output_channel.toString().includes('file') || outputAsFile;
-    this.outputAsConsole = process.env.output_channel.toString().includes('console') || outputAsConsole;
+   constructor(){
+    this.outputAsFile = process.env.output_channel.toString().includes('file') || this.outputAsFile || false;
+    this.outputAsConsole = process.env.output_channel.toString().includes('console') || outputAsConsole || true;
     this.logfileName = process.env.file_name + new Date().toISOString() + ".log";
-    this.logLevel = process.env.logLevel || logLevel;
+    this.logLevel = process.env.logLevel || logLevel || 'error';
     this.greeting = process.env.greeting || '';
+    this.mapOfOutputChannels = new Map();
 
     if(!fs.existsSync(process.env.file_path) && this.outputAsFile){
         this.outputAsFile = false;
     }
-    
-    if(this.outputAsFile){
-        this.fileWriter = fs.createWriteStream(
+    if(this.outputAsFile){    
+        const myWritable = fs.createWriteStream(
             path.join(process.env.file_path,this.logfileName));
+        this.mapOfOutputChannels.set('file',{writable:myWritable,readable:null});
     }
-    this.shouldLog = this.outputAsConsole || this.outputAsFile;
-    
-    if(this.shouldLog){
-        if(this.outputAsFile && this.outputAsConsole){
-            this.myReadableForConsole = readable();
-            this.myReadableForFile = readable();
-            this.myReadableForConsole._read = () =>{};
-            this.myReadableForFile._read = () =>{};
-
-            this.myReadableForConsole.pipe(process.stdout);
-            this.myReadableForFile.pipe(this.fileWriter);
-         }else if(this.outputAsFile){
-            this.myReadableForFile = readable();
-            this.myReadableForFile._read = () =>{};
-
-             this.myReadableForFile.pipe(this.fileWriter);
-         }else if(this.outputAsConsole){
-            this.myReadableForConsole = readable();
-            this.myReadableForConsole._read = () =>{};
-
-             this.myReadableForConsole.pipe(process.stdout);
-         }
+    if(this.outputAsConsole){
+        this.mapOfOutputChannels.set('console',{writable:process.stdout,readable:null})
     }
+    this.loggingOutPutIsOn = this.outputAsConsole || this.outputAsFile;
     
-    
+    if(this.loggingOutPutIsOn){
+        this.mapOfOutputChannels.forEach((value)=>{
+            const readableInstance = readable();
+            readableInstance._read = ()=>{};
+            value['readable'] = readableInstance;
+            readableInstance.pipe(value.writable);
+        })
+    }
    }
     debug(logme){
-        if(loggerLevelChecker('DEBUG',this.logLevel)){this.log('DEBUG:',logme)}
+       return this.log('DEBUG',logme);
     }
-    info(logmenfo){
-        if(loggerLevelChecker('INFO',this.logLevel)){this.log('INFO:',logme)}
+    info(logme){
+        return this.log('INFO',logme);
     }
     warning(logme){
-        if(loggerLevelChecker('WARNING',this.logLevel)){this.log('WARNING:',logme)}
+        return this.log('WARNING',logme);
     }   
     error(logme){
-        if(loggerLevelChecker('ERROR',this.logLevel)){this.log('ERROR:',logme)}
+        return this.log('ERROR',logme);
     }
     log(debugLevel,content){
-        if (this.shouldLog){
+        if(!loggerLevelChecker(debugLevel,this.logLevel)){
+            return;
+        }
+        if (this.loggingOutPutIsOn){
             setTimeout(() => {
-                if(this.outputAsFile){
-                    this.myReadableForFile.push(this.greeting + ' ' + debugLevel +content+'\n');
-                }
-                
-                if(this.outputAsConsole){
-                    this.myReadableForConsole.push(debugLevel +content+'\n');
-                }
-                },0)
+                this.mapOfOutputChannels.forEach((value) => {
+                    value.readable.push(this.greeting + ' ' + debugLevel + ":" +content+'\n');
+                })
+            },0)
         }
     }
 }
