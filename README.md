@@ -33,7 +33,7 @@ greeting=handsome
 logLevel=warning
 ```
 
-the output to console/file will have the greetings so output of the test provided in debug mode will looke like this :
+the output to console/file will have the greetings so output of the test provided with a greeting of a "handsome" , in debug mode will look like this :
 ```
 handsome DEBUG:hello world
 handsome DEBUG:hello world second line
